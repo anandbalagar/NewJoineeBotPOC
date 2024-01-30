@@ -1,0 +1,36 @@
+{
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Company Onboarding Assistant",
+      "size": "large",
+      "weight": "bolder",
+      "horizontalAlignment": "center"
+    },
+    {
+      "type": "Image",
+      "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ73kV7rL_IvXTBF8vDOXggF5g2zF25Y_ADUw&usqp=CAU",
+      "size": "extraLarge",
+      "width": "stretch",
+      "horizontalAlignment": "center"
+
+
+    },
+    {
+      "type": "TextBlock",
+      "text": "Welcome to FNF India! 😊 Let's make your onboarding process seamless and enjoyable.",
+      "wrap": true,
+      "size": "medium"
+    },
+    {
+      "type": "TextBlock",
+      "text": "I'm here to assist you with the necessary onboarding steps. Whether it's setting up your account, providing training materials, I've got you covered. Feel free to choose an option to begin.",
+      "wrap": true,
+      "size": "small",
+      "separator": true
+    }
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

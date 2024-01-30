@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-
 namespace ToDoBot.Dialogs.Operations
 {
     public class AccountSetupDialog : ComponentDialog
@@ -65,7 +64,7 @@ namespace ToDoBot.Dialogs.Operations
             var promptOptions = new PromptOptions
             {
                 Prompt = MessageFactory.Text("Enter your phone number."),
-                RetryPrompt = MessageFactory.Text("Please enter exact 10 digits"),
+                RetryPrompt = MessageFactory.Text("Please enter a valid input (For example : 7338366902)"),
             };
 
             return await stepContext.PromptAsync(nameof(NumberPrompt<int>), promptOptions, cancellationToken);

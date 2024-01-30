@@ -79,13 +79,92 @@ namespace Microsoft.BotBuilderSamples
                 Buttons = new List<CardAction>
         {
             new CardAction(ActionTypes.OpenUrl, "Annual SDL Training", value: "https://fnf.vega.securitycompass.com/"),
-            new CardAction(ActionTypes.OpenUrl, "Software Development Courses", value: "https://fnfi.com/software-development-courses"),
+            new CardAction(ActionTypes.OpenUrl, "Ethical Training", value: "https://fnfi.com/software-development-courses"),
             new CardAction(ActionTypes.ImBack, "Back to Main Menu", value: "Main Menu"),
         }
             };
 
             return heroCard;
         }
+
+        public static Attachment CreateAdaptiveCardAttachment(string cardFileName)
+        {
+
+            var cardPath = Path.Combine("cards", cardFileName);
+            var cardJson = File.ReadAllText(cardPath);
+
+            return new Attachment()
+            {
+                ContentType = "application/vnd.microsoft.card.adaptive",
+                Content = JsonConvert.DeserializeObject(cardJson, new JsonSerializerSettings { MaxDepth = null }),
+            };
+
+        }
+
+        public static Attachment GetAdaptiveCardFeedback()
+        {
+            var adaptiveCard = new AdaptiveCard(new AdaptiveSchemaVersion(1, 3))
+            {
+                Body = new List<AdaptiveElement>
+        {
+            new AdaptiveTextBlock
+            {
+                Text = "Welcome to feedback!",
+                Size = AdaptiveTextSize.Large,
+                Weight = AdaptiveTextWeight.Bolder
+            },
+            new AdaptiveTextBlock
+            {
+                Text = "Provide feedback"
+            },
+            new AdaptiveChoiceSetInput
+            {
+                Id = "rating",
+                Style = AdaptiveChoiceInputStyle.Expanded,
+                Choices = new List<AdaptiveChoice>
+                {
+                    new AdaptiveChoice { Title = "⭐", Value = "1" },
+                    new AdaptiveChoice { Title = "⭐⭐", Value = "2" },
+                    new AdaptiveChoice { Title = "⭐⭐⭐", Value = "3" },
+                    new AdaptiveChoice { Title = "⭐⭐⭐⭐", Value = "4" },
+                    new AdaptiveChoice { Title = "⭐⭐⭐⭐⭐", Value = "5" },
+                },
+                Placeholder = "Select a rating",
+            },
+            new AdaptiveTextInput
+            {
+                Id = "comments",
+                Placeholder = "Type your comments here..."
+            }
+        },
+                Actions = new List<AdaptiveAction>
+        {
+            new AdaptiveSubmitAction
+            {
+                Title = "Submit",
+                Data = new
+                {
+                    Type = "submit"
+                }
+            },
+            new AdaptiveSubmitAction
+            {
+                Title = "Exit",
+                Data = new
+                {
+                    Type = "exit"
+                }
+            }
+        }
+            };
+
+            return new Attachment
+            {
+                ContentType = AdaptiveCard.ContentType,
+                Content = JsonConvert.DeserializeObject(adaptiveCard.ToJson())
+            };
+        }
+
 
 
     }

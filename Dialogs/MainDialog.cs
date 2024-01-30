@@ -41,6 +41,7 @@ namespace EchoBot1.Dialogs
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
             AddDialog(new AccountSetupDialog(userState));
             AddDialog(new TrainingMaterialDialog());
+            AddDialog(new FeedbackDialog());
             AddDialog(new ItSupportDialog());
 
             // The initial child Dialog to run.
@@ -51,9 +52,9 @@ namespace EchoBot1.Dialogs
 
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text("What operation you would like to perform?"), cancellationToken);
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text("What option you would like to choose?"), cancellationToken);
 
-            List<string> operationList = new List<string> { "Account Setup", "Training Material", "IT Support" };
+            List<string> operationList = new List<string> { "Account Setup", "Training Material", "IT Support" ,"Provide Feedback" };
             // Create card
             var card = new AdaptiveCard(new AdaptiveSchemaVersion(1, 0))
             {
@@ -98,7 +99,11 @@ namespace EchoBot1.Dialogs
                 {
                     return await stepContext.BeginDialogAsync(nameof(ItSupportDialog), new ItSupport(), cancellationToken);
                 }
-                else
+                else if ("Provide Feedback".Equals(operation))
+                {
+                    return await stepContext.BeginDialogAsync(nameof(FeedbackDialog), new Feedback(), cancellationToken);
+                }
+               else
                 {
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text("User Input not matched."), cancellationToken);
                 return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
