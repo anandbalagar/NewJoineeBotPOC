@@ -43,6 +43,7 @@ namespace EchoBot1.Dialogs
             AddDialog(new TrainingMaterialDialog());
             AddDialog(new FeedbackDialog());
             AddDialog(new ItSupportDialog());
+            AddDialog(new CompanyCultureDialog());
 
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
@@ -54,7 +55,7 @@ namespace EchoBot1.Dialogs
         {
             await stepContext.Context.SendActivityAsync(MessageFactory.Text("What option you would like to choose?"), cancellationToken);
 
-            List<string> operationList = new List<string> { "Account Setup", "Training Material", "IT Support" ,"Provide Feedback" };
+            List<string> operationList = new List<string> { "Account Setup", "Training Material", "IT Support" , "Company Culture", "Provide Feedback" };
             // Create card
             var card = new AdaptiveCard(new AdaptiveSchemaVersion(1, 0))
             {
@@ -99,7 +100,11 @@ namespace EchoBot1.Dialogs
                 {
                     return await stepContext.BeginDialogAsync(nameof(ItSupportDialog), new ItSupport(), cancellationToken);
                 }
-                else if ("Provide Feedback".Equals(operation))
+                else if ("Company Culture".Equals(operation))
+                {
+                    return await stepContext.BeginDialogAsync(nameof(CompanyCultureDialog), new CompanyCulture(), cancellationToken);
+                }
+            else if ("Provide Feedback".Equals(operation))
                 {
                     return await stepContext.BeginDialogAsync(nameof(FeedbackDialog), new Feedback(), cancellationToken);
                 }
@@ -111,14 +116,7 @@ namespace EchoBot1.Dialogs
 
         }
 
-        //private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        //{
-
-        //   // await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Back to main dialog"), cancellationToken);
-        //    var promptMessage = "What else i can do?";
-        //    return await stepContext.ReplaceDialogAsync(InitialDialogId, promptMessage, cancellationToken);
-
-        //}
+        
     }
     }
     
