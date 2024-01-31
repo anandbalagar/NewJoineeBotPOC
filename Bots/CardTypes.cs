@@ -79,7 +79,7 @@ namespace Microsoft.BotBuilderSamples
                 Buttons = new List<CardAction>
         {
             new CardAction(ActionTypes.OpenUrl, "Annual SDL Training", value: "https://fnf.vega.securitycompass.com/"),
-            new CardAction(ActionTypes.OpenUrl, "Ethical Training", value: "https://fnfi.com/software-development-courses"),
+            new CardAction(ActionTypes.OpenUrl, "Mandatory Corporate Compliance Training link", value: "https://saiglobal-fnf.csod.com"),
             new CardAction(ActionTypes.ImBack, "Back to Main Menu", value: "Main Menu"),
         }
             };
