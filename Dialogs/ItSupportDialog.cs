@@ -40,13 +40,13 @@ namespace ToDoBot.Dialogs.Operations
                 Text = "To raise a support ticket, please watch the above video. After watching the video, you can access the ticket portal to raise your ticket from the given below link.",
                 Image = new ThumbnailUrl
                 {
-                    Url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Big_buck_bunny_poster_big.jpg/220px-Big_buck_bunny_poster_big.jpg",
+                    Url = "https://chatbot897.blob.core.windows.net/chatbotimage/it support.PNG",
                 },
                 Media = new List<MediaUrl>
                 {
                     new MediaUrl()
                     {
-                        Url = "http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4",
+                        Url = "https://chatbot897.blob.core.windows.net/chatbotimage/Call with Chavan, and 1 other-20240131_162212-Meeting Recording.mp4",
                     },
                 },
                 Buttons = new List<CardAction>

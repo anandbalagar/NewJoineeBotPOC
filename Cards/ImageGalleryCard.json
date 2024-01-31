@@ -5,7 +5,7 @@
   "body": [
     {
       "type": "TextBlock",
-      "text": "Here are some cool photos",
+      "text": "Some of the key moments",
       "size": "large"
     },
     {
@@ -21,8 +21,7 @@
         {
           "type": "Image",
           "url": "https://chatbot897.blob.core.windows.net/chatbotimage/badminton.PNG"
-        } ,
-
+        },
         {
           "type": "Image",
           "url": "https://chatbot897.blob.core.windows.net/chatbotimage/birthday.PNG"
@@ -46,12 +45,15 @@
         {
           "type": "Image",
           "url": "https://chatbot897.blob.core.windows.net/chatbotimage/teamouting.PNG"
-        },
-        {
-          "type": "Image",
-          "url": "https://chatbot897.blob.core.windows.net/chatbotimage/virtualfunday.PNG"
         }
       ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.OpenUrl",
+      "title": "FNFI Social",
+      "url": "https://web.yammer.com/teams/feed"
     }
   ]
 }
