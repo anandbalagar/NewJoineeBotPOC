@@ -10,7 +10,7 @@
     },
     {
       "type": "TextBlock",
-      "text": "Sorry some of them are repeats",
+      "text": " ",
       "size": "medium",
       "weight": "lighter"
     },
@@ -20,39 +20,35 @@
       "images": [
         {
           "type": "Image",
-          "url": "https://picsum.photos/200/200?image=100"
+          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\badminton.PNG"
         },
         {
           "type": "Image",
-          "url": "https://picsum.photos/300/200?image=200"
+          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\birthday.PNG"
         },
         {
           "type": "Image",
-          "url": "https://picsum.photos/300/200?image=301"
+          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\Capture.PNG"
         },
         {
           "type": "Image",
-          "url": "https://picsum.photos/200/200?image=400"
+          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\carrom.PNG"
         },
         {
           "type": "Image",
-          "url": "https://picsum.photos/300/200?image=500"
+          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\fishing.PNG"
         },
         {
           "type": "Image",
-          "url": "https://picsum.photos/200/200?image=600"
+          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\independenceday.PNG"
         },
         {
           "type": "Image",
-          "url": "https://picsum.photos/300/200?image=700"
+          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\teamouting.PNG"
         },
         {
           "type": "Image",
-          "url": "https://picsum.photos/300/200?image=800"
-        },
-        {
-          "type": "Image",
-          "url": "https://picsum.photos/300/200?image=900"
+          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\virtualfunday.PNG"
         }
       ]
     }
