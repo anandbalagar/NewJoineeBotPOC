@@ -37,21 +37,5 @@ namespace ToDoBot.Dialogs.Operations
             await stepContext.Context.SendActivityAsync(response, cancellationToken);
             return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }
-
-        //private async Task<DialogTurnResult> ExitStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        //{
-        //    if ((bool)stepContext.Result)
-        //    {
-        //        return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
-
-        //    }
-        //    else
-
-        //    {
-        //        return await stepContext.BeginDialogAsync(nameof(WaterfallDialog), cancellationToken: cancellationToken);
-
-        //    }
-
-        //}
     }
 }

@@ -27,7 +27,7 @@ namespace ToDoBot.Dialogs.Operations
 
         private async Task<DialogTurnResult> WelcomeStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text("Welcome to IT Support!"), cancellationToken);
+            //await stepContext.Context.SendActivityAsync(MessageFactory.Text("Welcome to IT Support!"), cancellationToken);
             return await stepContext.NextAsync();
         }
 

@@ -46,11 +46,9 @@
         {
           "type": "Image",
           "url": "https://chatbot897.blob.core.windows.net/chatbotimage/teamouting.PNG"
-        },
-        {
-          "type": "Image",
-          "url": "https://chatbot897.blob.core.windows.net/chatbotimage/virtualfunday.PNG"
         }
+        
+     
       ]
     }
   ]
