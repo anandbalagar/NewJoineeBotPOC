@@ -26,7 +26,7 @@
     },
     {
       "type": "TextBlock",
-      "text": "I'm here to assist you with the necessary onboarding steps. Whether it's setting up your account, providing training materials, I've got you covered. Feel free to choose an option to begin.",
+      "text": "I'm here to assist you with the necessary onboarding steps. Whether it's setting up your account, providing training materials, I've got you covered.\n What option you would like to choose?",
       "wrap": true,
       "size": "small",
       "separator": true

@@ -1,11 +1,16 @@
 ﻿using AdaptiveCards;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.Dialogs.Choices;
+using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace Microsoft.BotBuilderSamples
 {
@@ -100,6 +105,9 @@ namespace Microsoft.BotBuilderSamples
             };
 
         }
+
+      
+
 
         public static Attachment GetAdaptiveCardFeedback()
         {

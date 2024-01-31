@@ -49,16 +49,59 @@ namespace EchoBot1.Dialogs
             InitialDialogId = nameof(WaterfallDialog);
         }
 
-       
 
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text("What option you would like to choose?"), cancellationToken);
+            List<string> operationList = new List<string> { "Account Setup", "Training Material", "IT Support", "Company Culture", "Provide Feedback" };
 
-            List<string> operationList = new List<string> { "Account Setup", "Training Material", "IT Support" , "Company Culture", "Provide Feedback" };
-            // Create card
+            // Create adaptive card with welcome message, image, and choices
             var card = new AdaptiveCard(new AdaptiveSchemaVersion(1, 0))
             {
+                Body = new List<AdaptiveElement>
+                {
+
+                    new AdaptiveImage
+                    {
+                        Url = new Uri("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ73kV7rL_IvXTBF8vDOXggF5g2zF25Y_ADUw&usqp=CAU"),
+                        Size = AdaptiveImageSize.Auto,
+                        HorizontalAlignment= AdaptiveHorizontalAlignment.Center,
+
+                    },
+
+                    new AdaptiveTextBlock
+                    {
+                        Text = "Welcome to FNF India! 😊 ",
+                        Size = AdaptiveTextSize.Large,
+                        Weight = AdaptiveTextWeight.Bolder,
+                        Wrap= true,
+                    },
+
+                    new AdaptiveTextBlock
+                    {
+                        Text = "Let’s make your onboarding process seamless and enjoyable.I’m here to assist you with the necessary onboarding steps.",
+                        Size = AdaptiveTextSize.Normal,
+                        Weight = AdaptiveTextWeight.Lighter,
+                        Wrap= true,
+
+                    },
+
+                    new AdaptiveTextBlock
+                    {
+                        Text = "Whether it’s setting up your account, providing training materials, I’ve got you covered.",
+                        Size = AdaptiveTextSize.Normal,
+                        Weight = AdaptiveTextWeight.Lighter,
+                        Wrap= true,
+
+                    },
+
+                    new AdaptiveTextBlock
+                    {
+                        Text = "What option would you like to choose?",
+                        Size = AdaptiveTextSize.Medium,
+                        Weight = AdaptiveTextWeight.Lighter,
+                        Wrap= true,
+                    }
+                },
                 // Use LINQ to turn the choices into submit actions
                 Actions = operationList.Select(choice => new AdaptiveSubmitAction
                 {
@@ -66,6 +109,7 @@ namespace EchoBot1.Dialogs
                     Data = choice,  // This will be a string
                 }).ToList<AdaptiveAction>(),
             };
+
             // Prompt
             return await stepContext.PromptAsync(nameof(ChoicePrompt), new PromptOptions
             {
@@ -78,15 +122,17 @@ namespace EchoBot1.Dialogs
                 Choices = ChoiceFactory.ToChoices(operationList),
                 // Don't render the choices outside the card
                 Style = ListStyle.None,
-            },
-                cancellationToken);
+            }, cancellationToken);
+
+
         }
 
-            private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+
+        private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
             {
                 stepContext.Values["Operation"] = ((FoundChoice)stepContext.Result).Value;
                 string operation = (string)stepContext.Values["Operation"];
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("You have selected - " + operation), cancellationToken);
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text("You selected " + operation), cancellationToken);
 
                 if ("Account Setup".Equals(operation))
                 {

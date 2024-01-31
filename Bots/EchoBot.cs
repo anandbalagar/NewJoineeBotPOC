@@ -54,9 +54,9 @@ namespace NewJoineeBOT.Bots
             {
                 if (member.Id != turnContext.Activity.Recipient.Id)
                 {
-                    var welcomeCard = CardTypes.CreateAdaptiveCardAttachment("welcomeCard.json");
-                    var response = MessageFactory.Attachment(welcomeCard, ssml: "Welcome to my Bot!");
-                    await turnContext.SendActivityAsync(response, cancellationToken);
+                    //var welcomeCard = CardTypes.CreateAdaptiveCardAttachment("welcomeCard.json");
+                    //var response = MessageFactory.Attachment(welcomeCard, ssml: "Welcome to my Bot!");
+                    //await turnContext.SendActivityAsync(response, cancellationToken);
 
                     await Dialog.RunAsync(turnContext,
                       ConversationState.CreateProperty<DialogState>("DialogState"),
