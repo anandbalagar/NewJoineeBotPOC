@@ -20,35 +20,36 @@
       "images": [
         {
           "type": "Image",
-          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\badminton.PNG"
+          "url": "https://chatbot897.blob.core.windows.net/chatbotimage/badminton.PNG"
+        } ,
+
+        {
+          "type": "Image",
+          "url": "https://chatbot897.blob.core.windows.net/chatbotimage/birthday.PNG"
         },
         {
           "type": "Image",
-          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\birthday.PNG"
+          "url": "https://chatbot897.blob.core.windows.net/chatbotimage/Capture.PNG"
         },
         {
           "type": "Image",
-          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\Capture.PNG"
+          "url": "https://chatbot897.blob.core.windows.net/chatbotimage/carrom.PNG"
         },
         {
           "type": "Image",
-          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\carrom.PNG"
+          "url": "https://chatbot897.blob.core.windows.net/chatbotimage/fishing.PNG"
         },
         {
           "type": "Image",
-          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\fishing.PNG"
+          "url": "https://chatbot897.blob.core.windows.net/chatbotimage/independenceday.PNG"
         },
         {
           "type": "Image",
-          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\independenceday.PNG"
+          "url": "https://chatbot897.blob.core.windows.net/chatbotimage/teamouting.PNG"
         },
         {
           "type": "Image",
-          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\teamouting.PNG"
-        },
-        {
-          "type": "Image",
-          "url": "C:\\Users\\6145131\\Source\\Repos\\NewJoineeBOT\\Images\\virtualfunday.PNG"
+          "url": "https://chatbot897.blob.core.windows.net/chatbotimage/virtualfunday.PNG"
         }
       ]
     }
