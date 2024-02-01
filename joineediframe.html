@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+ 
+    #chatbot-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+     height: 50px;
+      z-index: 9999;
+      cursor: pointer;
+    }
+    
+    #chatbot-frame {
+      display: none;
+      position: fixed;
+      bottom: 50px;
+      right: 20px;
+      width: 350px;
+      height: 500px;
+      border: none;
+      z-index: 9998;
+    }
+    
+    
+  </style>
+</head>
+<body>
+
+ 
+  <img src="./Images/chat-bot.png" id="chatbot-icon" alt="Chatbot Icon" onclick="toggleChatbot()">
+
+  <iframe src='https://webchat.botframework.com/embed/newjoineebot?s=11kQTpK1k48.HxauLaKBPOAKZe9yhuFaRH6tJtVveCkLRYkaLXrlXG8' id="chatbot-frame"></iframe>
+
+  
+  
+
+  <script>
+    function toggleChatbot() {
+      var chatbotFrame = document.getElementById("chatbot-frame");
+      if (chatbotFrame.style.display === "block") {
+        chatbotFrame.style.display = "none";
+      } else {
+        chatbotFrame.style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>
