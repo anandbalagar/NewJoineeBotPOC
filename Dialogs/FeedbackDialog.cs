@@ -28,7 +28,7 @@ namespace ToDoBot.Dialogs.Operations
                 StartStepAsync,
                 SecondStepAsync,
                 ThirdStepAsync,
-                FourthStepAsync,
+               // FourthStepAsync,
                 //DisplayFeedbackStepAsync
                 //CommentStepAsync
             };
@@ -59,8 +59,8 @@ namespace ToDoBot.Dialogs.Operations
             return await stepContext.PromptAsync(nameof(ChoicePrompt),
                new PromptOptions
                {
-                   Prompt = MessageFactory.Text("Please enter your rating."),
-                   Choices = ChoiceFactory.ToChoices(new List<string> { "1", "2", "3" }),
+                   Prompt = MessageFactory.Text("Kindly provide your feedback by rating your experience on a scale of 1 to 5"),
+                   Choices = ChoiceFactory.ToChoices(new List<string> { "1", "2", "3","4","5" }),
                }, cancellationToken);
         }
 
@@ -68,7 +68,7 @@ namespace ToDoBot.Dialogs.Operations
         {
             stepContext.Values["Ratings"] = ((FoundChoice)stepContext.Result).Value;
 
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("You can also add some comment") }, cancellationToken);
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("Please include any comments or suggestions to help us further improve.") }, cancellationToken);
         }
 
         private async Task<DialogTurnResult> ThirdStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -83,29 +83,43 @@ namespace ToDoBot.Dialogs.Operations
 
             if (status)
             {
+<<<<<<< HEAD
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text("Feedback Inserted"), cancellationToken);
             }
             else
             {
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text("Feedback Not Inserted or Employee already exists"), cancellationToken);
-            }
+=======
+                var heroCard = new HeroCard
+                {
+                    Text = "Thank you 😊. Your feedback has been submitted",
 
-            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions
-            {
-                Prompt = MessageFactory.Text("Would you like to insert more Employee details?")
-            }, cancellationToken);
-        }
+                    Buttons = new List<CardAction>
+                {
+                    new CardAction()
+                    {
+                        Title = "Main Menu",
+                        Type = ActionTypes.ImBack,
+                        Value = "Main Menu",
+                    },
+                },
+                };
 
-        private async Task<DialogTurnResult> FourthStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            if ((bool)stepContext.Result)
-            {
-                return await stepContext.ReplaceDialogAsync(InitialDialogId, null, cancellationToken);
+                // Attach the Hero Card to the response
+                var attachment = heroCard.ToAttachment();
+                var message = MessageFactory.Attachment(attachment);
+                await stepContext.Context.SendActivityAsync(message, cancellationToken);
+
             }
             else
             {
-                return await stepContext.EndDialogAsync(null, cancellationToken);
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text("Feedback not submitted"), cancellationToken);
+>>>>>>> 4dcead5a272d0de6e89a3830f7585bf59fe7018b
             }
+
+            return await stepContext.EndDialogAsync(null, cancellationToken);
+
         }
+
     }
 }
