@@ -1,5 +1,8 @@
-﻿using Microsoft.Bot.Builder;
+﻿using EchoBot1.Dialogs;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Dialogs.Choices;
 using Microsoft.Bot.Schema;
 using Microsoft.BotBuilderSamples;
 using System;
@@ -17,7 +20,7 @@ namespace ToDoBot.Dialogs.Operations
             var waterfallSteps = new WaterfallStep[]
             {
                 StartStepAsync,
-                //ExitStepAsync,
+                FeedbackStepAsync,
             };
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallSteps));
@@ -35,7 +38,25 @@ namespace ToDoBot.Dialogs.Operations
             var response = MessageFactory.Attachment(receiptCard, ssml: "Welcome to my Bot!");
 
             await stepContext.Context.SendActivityAsync(response, cancellationToken);
-            return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions 
+            { 
+                Prompt = MessageFactory.Text("Thank you for working with our Bot. Would you like to provide feedback on your experience?") 
+            }, cancellationToken);
         }
-    }
-}
+
+
+
+        private static async Task<DialogTurnResult> FeedbackStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            if ((bool)stepContext.Result)
+            {
+
+                return await stepContext.BeginDialogAsync(nameof(FeedbackDialog), null, cancellationToken: cancellationToken);
+            }
+            else
+            {
+                return await stepContext.BeginDialogAsync(nameof(MainDialog), cancellationToken: cancellationToken);
+            }
+        }
+     }
+ }

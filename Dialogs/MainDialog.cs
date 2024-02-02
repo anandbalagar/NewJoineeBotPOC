@@ -55,7 +55,7 @@ namespace EchoBot1.Dialogs
 
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            List<string> operationList = new List<string> { "Account Setup", "Training Material", "IT Support", "Company Culture", "Provide Feedback" };
+            List<string> operationList = new List<string> { "Account Setup", "Training Material", "IT Support", "Company Culture"};
 
             // Create adaptive card with welcome message, image, and choices
             var card = new AdaptiveCard(new AdaptiveSchemaVersion(1, 0))
@@ -135,7 +135,7 @@ namespace EchoBot1.Dialogs
             {
                 stepContext.Values["Operation"] = ((FoundChoice)stepContext.Result).Value;
                 string operation = (string)stepContext.Values["Operation"];
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("You selected " + operation), cancellationToken);
+               // await stepContext.Context.SendActivityAsync(MessageFactory.Text("You selected " + operation), cancellationToken);
 
                 if ("Account Setup".Equals(operation))
                 {
@@ -153,10 +153,10 @@ namespace EchoBot1.Dialogs
                 {
                     return await stepContext.BeginDialogAsync(nameof(CompanyCultureDialog), new CompanyCulture(), cancellationToken);
                 }
-            else if ("Provide Feedback".Equals(operation))
-                {
-                    return await stepContext.BeginDialogAsync(nameof(FeedbackDialog), null, cancellationToken);
-                }
+            //else if ("Provide Feedback".Equals(operation))
+            //    {
+            //        return await stepContext.BeginDialogAsync(nameof(FeedbackDialog), null, cancellationToken);
+            //    }
                else
                 {
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text("User Input not matched."), cancellationToken);

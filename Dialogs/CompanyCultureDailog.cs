@@ -7,6 +7,7 @@ using System.Threading;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.BotBuilderSamples;
+using EchoBot1.Dialogs;
 
 namespace ToDoBot.Dialogs.Operations
 {
@@ -20,6 +21,7 @@ namespace ToDoBot.Dialogs.Operations
                 ShowImageGalleryStepAsync,
                 ShowVideoCardStepAsync,
                 EndDialogStepAsync,
+                FeedbackStepAsync
             };
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallSteps));
@@ -43,18 +45,6 @@ namespace ToDoBot.Dialogs.Operations
 
             return await stepContext.NextAsync();
         }
-
-        //private Attachment CreateAdaptiveCardAttachment(string cardFileName)
-        //{
-        //    var cardPath = Path.Combine("cards", cardFileName);
-        //    var cardJson = File.ReadAllText(cardPath);
-
-        //    return new Attachment()
-        //    {
-        //        ContentType = "application/vnd.microsoft.card.adaptive",
-        //        Content = JsonConvert.DeserializeObject(cardJson, new JsonSerializerSettings { MaxDepth = null }),
-        //    };
-        //}
 
         private async Task<DialogTurnResult> ShowVideoCardStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
@@ -119,8 +109,21 @@ namespace ToDoBot.Dialogs.Operations
 
             await stepContext.Context.SendActivityAsync(message, cancellationToken);
 
-            return await stepContext.EndDialogAsync();
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("Thank you for working with our Bot. Would you like to provide feedback on your experience?") }, cancellationToken);
 
+        }
+
+        private static async Task<DialogTurnResult> FeedbackStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            if ((bool)stepContext.Result)
+            {
+
+                return await stepContext.BeginDialogAsync(nameof(FeedbackDialog), null, cancellationToken: cancellationToken);
+            }
+            else
+            {
+                return await stepContext.BeginDialogAsync(nameof(MainDialog), cancellationToken: cancellationToken);
+            }
         }
     }
 }

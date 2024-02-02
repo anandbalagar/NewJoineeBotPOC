@@ -1,4 +1,5 @@
-﻿using Microsoft.Bot.Builder;
+﻿using EchoBot1.Dialogs;
+using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace ToDoBot.Dialogs.Operations
                 WelcomeStepAsync,
                 ProvideOptionsStepAsync,
                 ProcessOptionStepAsync,
+                FeedbackStepAsync
             };
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallSteps));
@@ -98,9 +100,21 @@ namespace ToDoBot.Dialogs.Operations
 
             await stepContext.Context.SendActivityAsync(message, cancellationToken);
 
-            return await stepContext.EndDialogAsync();
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("Thank you for working with our Bot. Would you like to provide feedback on your experience?") }, cancellationToken);
         }
 
+        private static async Task<DialogTurnResult> FeedbackStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            if ((bool)stepContext.Result)
+            {
+
+                return await stepContext.BeginDialogAsync(nameof(FeedbackDialog), null, cancellationToken: cancellationToken);
+            }
+            else
+            {
+                return await stepContext.BeginDialogAsync(nameof(MainDialog), cancellationToken: cancellationToken);
+            }
+        }
 
 
 
