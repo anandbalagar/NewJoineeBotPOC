@@ -28,7 +28,7 @@ namespace ToDoBot.Dialogs.Operations
                 StartStepAsync,
                 SecondStepAsync,
                 ThirdStepAsync,
-                FourthStepAsync,
+               // FourthStepAsync,
                 //DisplayFeedbackStepAsync
                 //CommentStepAsync
             };
@@ -83,29 +83,27 @@ namespace ToDoBot.Dialogs.Operations
 
             if (status)
             {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("Employee Inserted"), cancellationToken);
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text("Feedback submitted"), cancellationToken);
             }
             else
             {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("Employee Not Inserted or Employee already exists"), cancellationToken);
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text("Feedback not submitted"), cancellationToken);
             }
 
-            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions
-            {
-                Prompt = MessageFactory.Text("Would you like to insert more Employee details?")
-            }, cancellationToken);
+            return await stepContext.EndDialogAsync(null, cancellationToken);
+
         }
 
-        private async Task<DialogTurnResult> FourthStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            if ((bool)stepContext.Result)
-            {
-                return await stepContext.ReplaceDialogAsync(InitialDialogId, null, cancellationToken);
-            }
-            else
-            {
-                return await stepContext.EndDialogAsync(null, cancellationToken);
-            }
-        }
+        //private async Task<DialogTurnResult> FourthStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        //{
+        //    if ((bool)stepContext.Result)
+        //    {
+        //        return await stepContext.ReplaceDialogAsync(InitialDialogId, null, cancellationToken);
+        //    }
+        //    else
+        //    {
+        //        return await stepContext.EndDialogAsync(null, cancellationToken);
+        //    }
+        //}
     }
 }

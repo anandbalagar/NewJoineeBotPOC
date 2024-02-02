@@ -33,15 +33,15 @@ public partial class FeedbackDbContext : DbContext
         }
     }
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Feedback>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("FEEDBACK");
+            entity.HasKey(e => e.EmployeeId).HasName("PK__FEEDBACK__7AD04FF148F5BD36");
 
+            entity.ToTable("FEEDBACK");
+
+            entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
             entity.Property(e => e.Comment)
                 .IsRequired()
                 .HasMaxLength(50)
