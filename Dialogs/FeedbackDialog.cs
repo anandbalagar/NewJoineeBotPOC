@@ -59,8 +59,8 @@ namespace ToDoBot.Dialogs.Operations
             return await stepContext.PromptAsync(nameof(ChoicePrompt),
                new PromptOptions
                {
-                   Prompt = MessageFactory.Text("Please enter your rating."),
-                   Choices = ChoiceFactory.ToChoices(new List<string> { "1", "2", "3" }),
+                   Prompt = MessageFactory.Text("Kindly provide your feedback by rating your experience on a scale of 1 to 5"),
+                   Choices = ChoiceFactory.ToChoices(new List<string> { "1", "2", "3","4","5" }),
                }, cancellationToken);
         }
 
@@ -68,7 +68,7 @@ namespace ToDoBot.Dialogs.Operations
         {
             stepContext.Values["Ratings"] = ((FoundChoice)stepContext.Result).Value;
 
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("You can also add some comment") }, cancellationToken);
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("Please include any comments or suggestions to help us further improve.") }, cancellationToken);
         }
 
         private async Task<DialogTurnResult> ThirdStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -83,7 +83,26 @@ namespace ToDoBot.Dialogs.Operations
 
             if (status)
             {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("Feedback submitted"), cancellationToken);
+                var heroCard = new HeroCard
+                {
+                    Text = "Thank you 😊. Your feedback has been submitted",
+
+                    Buttons = new List<CardAction>
+                {
+                    new CardAction()
+                    {
+                        Title = "Main Menu",
+                        Type = ActionTypes.ImBack,
+                        Value = "Main Menu",
+                    },
+                },
+                };
+
+                // Attach the Hero Card to the response
+                var attachment = heroCard.ToAttachment();
+                var message = MessageFactory.Attachment(attachment);
+                await stepContext.Context.SendActivityAsync(message, cancellationToken);
+
             }
             else
             {
@@ -94,16 +113,5 @@ namespace ToDoBot.Dialogs.Operations
 
         }
 
-        //private async Task<DialogTurnResult> FourthStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        //{
-        //    if ((bool)stepContext.Result)
-        //    {
-        //        return await stepContext.ReplaceDialogAsync(InitialDialogId, null, cancellationToken);
-        //    }
-        //    else
-        //    {
-        //        return await stepContext.EndDialogAsync(null, cancellationToken);
-        //    }
-        //}
     }
 }

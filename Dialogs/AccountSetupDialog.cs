@@ -1,4 +1,5 @@
-﻿using Microsoft.Bot.Builder;
+﻿using EchoBot1.Dialogs;
+using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
 using Microsoft.Bot.Schema;
@@ -30,6 +31,7 @@ namespace ToDoBot.Dialogs.Operations
                 GenderStepAsync,
                 PasswordStepAsync,
                 SummaryStepAsync,
+                FeedbackStepAsync,
                // ExitStepAsync
             };
 
@@ -145,25 +147,41 @@ namespace ToDoBot.Dialogs.Operations
 
             await stepContext.Context.SendActivityAsync(response, cancellationToken);
 
-            return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("Thank you for working with our Bot. Would you like to provide feedback on your experience?") }, cancellationToken);
+
+            // return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }
 
-        //private async Task<DialogTurnResult> ExitStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        //{
-        //    if ((bool)stepContext.Result)
-        //    {
-        //        return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+        private static async Task<DialogTurnResult> FeedbackStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            if ((bool)stepContext.Result)
+            {
 
-        //    }
-        //    else
-            
-        //    {
-        //        return await stepContext.BeginDialogAsync(nameof(WaterfallDialog), cancellationToken: cancellationToken);
+                return await stepContext.BeginDialogAsync(nameof(FeedbackDialog), null, cancellationToken: cancellationToken);
+            }
+            else
+            {
+                return await stepContext.BeginDialogAsync(nameof(MainDialog), cancellationToken: cancellationToken);
+            }
 
-        //    }
+        }
 
-        //}
-        private static Task<bool> PhonePromptValidatorAsync(PromptValidatorContext<long> promptContext, CancellationToken cancellationToken)
+            //private async Task<DialogTurnResult> ExitStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+            //{
+            //    if ((bool)stepContext.Result)
+            //    {
+            //        return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+
+            //    }
+            //    else
+
+            //    {
+            //        return await stepContext.BeginDialogAsync(nameof(WaterfallDialog), cancellationToken: cancellationToken);
+
+            //    }
+
+            //}
+            private static Task<bool> PhonePromptValidatorAsync(PromptValidatorContext<long> promptContext, CancellationToken cancellationToken)
         {
             string phoneNumberString = promptContext.Recognized.Value.ToString();
             return Task.FromResult(promptContext.Recognized.Succeeded && phoneNumberString.Length == 10);

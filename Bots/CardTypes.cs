@@ -58,10 +58,17 @@ namespace Microsoft.BotBuilderSamples
                         new ReceiptItem(
 
                          $"All the Best for you new journey!"
-                         )
-
-
-                    }
+                         ),
+                    },
+                // Buttons = new List<CardAction>
+                //{
+                //    new CardAction()
+                //    {
+                //        Title = "Main Menu",
+                //        Type = ActionTypes.ImBack,
+                //        Value = "Main Menu",
+                //    },
+                //},
             };
 
 
