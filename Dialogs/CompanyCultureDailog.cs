@@ -99,18 +99,19 @@ namespace ToDoBot.Dialogs.Operations
 
             var heroCard = new HeroCard
             {
-                Text = "We hope you are excited about joining our fantastic company culture! If you have any questions, feel free to ask..",
+                Text = "We hope you are excited about joining our fantastic company! If you have any questions or need assistance, feel free to reach out to us at fnfi-corporatemail@fnf.com.",
 
                 Buttons = new List<CardAction>
                 {
                     new CardAction()
-                    {
-                        Title = "Main Menu",
-                        Type = ActionTypes.ImBack,
-                        Value = "Main Menu",
-                    },
+                        {
+                            Title = "Main Menu",
+                            Type = ActionTypes.ImBack,
+                            Value = "Main Menu",
+                        },
                 },
             };
+
 
             // Attach the Hero Card to the response
             var attachment = heroCard.ToAttachment();

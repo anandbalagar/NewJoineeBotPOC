@@ -83,11 +83,11 @@ namespace ToDoBot.Dialogs.Operations
 
             if (status)
             {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("Employee Inserted"), cancellationToken);
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text("Feedback Inserted"), cancellationToken);
             }
             else
             {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("Employee Not Inserted or Employee already exists"), cancellationToken);
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text("Feedback Not Inserted or Employee already exists"), cancellationToken);
             }
 
             return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions
