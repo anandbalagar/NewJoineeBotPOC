@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NewJoineeBOT.Bots;
+using NewJoineeBOT.Utility;
 
 namespace NewJoineeBOT
 {
@@ -48,8 +49,12 @@ namespace NewJoineeBOT
             // Create the Conversation state. (Used by the Dialog system itself.)
             services.AddSingleton<ConversationState>();
 
+            services.AddSingleton<UserRepository>();
+
+
             // The Dialog that will be run by the bot.
             services.AddSingleton<MainDialog>();
+
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, EchoBot<MainDialog>>();

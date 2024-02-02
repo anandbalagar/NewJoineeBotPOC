@@ -11,6 +11,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using ToDoBot.Dialogs.Operations;
 using System;
+using NewJoineeBOT.Utility;
 
 namespace EchoBot1.Dialogs
 {
@@ -18,12 +19,14 @@ namespace EchoBot1.Dialogs
 
     public class MainDialog : ComponentDialog
     {
+        UserRepository userRepository;
 
         private readonly IStatePropertyAccessor<User> _userProfileAccessor;
 
-        public MainDialog(UserState userState)
+        public MainDialog(UserState userState, UserRepository _userRepository)
             : base(nameof(MainDialog))
         {
+            userRepository = _userRepository;
             _userProfileAccessor = userState.CreateProperty<User>("User");
 
             // This array defines how the Waterfall will execute.
@@ -41,7 +44,7 @@ namespace EchoBot1.Dialogs
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
             AddDialog(new AccountSetupDialog(userState));
             AddDialog(new TrainingMaterialDialog());
-            AddDialog(new FeedbackDialog());
+            AddDialog(new FeedbackDialog(userRepository));
             AddDialog(new ItSupportDialog());
             AddDialog(new CompanyCultureDialog());
 
@@ -152,7 +155,7 @@ namespace EchoBot1.Dialogs
                 }
             else if ("Provide Feedback".Equals(operation))
                 {
-                    return await stepContext.BeginDialogAsync(nameof(FeedbackDialog), new Feedback(), cancellationToken);
+                    return await stepContext.BeginDialogAsync(nameof(FeedbackDialog), null, cancellationToken);
                 }
                else
                 {
