@@ -129,25 +129,29 @@ namespace ToDoBot.Dialogs.Operations
             var response = MessageFactory.Attachment(receiptCard, ssml: "Welcome to my Bot!");
 
             // Create a Hero Card with a button for returning to the Main Menu
-            var heroCard = new HeroCard
-           {
-                    Buttons = new List<CardAction>
-            {
-                new CardAction
-                {
-                    Type = ActionTypes.ImBack,
-                    Title = "Main Menu",
-                    Value = "Main Menu"
-                }
-            }
-            };
+           // var heroCard = new HeroCard
+           //{
+           //         Buttons = new List<CardAction>
+           // {
+           //     new CardAction
+           //     {
+           //         Type = ActionTypes.ImBack,
+           //         Title = "Main Menu",
+           //         Value = "Main Menu"
+           //     }
+           // }
+           // };
 
-            // Attach the Hero Card to the response
-            response.Attachments.Add(heroCard.ToAttachment());
+           // // Attach the Hero Card to the response
+           // response.Attachments.Add(heroCard.ToAttachment());
 
             await stepContext.Context.SendActivityAsync(response, cancellationToken);
 
-            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("Thank you for working with our Bot. Would you like to provide feedback on your experience?") }, cancellationToken);
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions 
+            {
+                Prompt = MessageFactory.Text("Was the above information helpful?") 
+            },
+            cancellationToken);
 
             // return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }
@@ -157,11 +161,33 @@ namespace ToDoBot.Dialogs.Operations
             if ((bool)stepContext.Result)
             {
 
-                return await stepContext.BeginDialogAsync(nameof(FeedbackDialog), null, cancellationToken: cancellationToken);
+                var heroCard = new HeroCard
+                {
+                    Text = "Thank you for using our Bot 😊",
+
+                    Buttons = new List<CardAction>
+                {
+                    new CardAction()
+                        {
+                            Title = "Main Menu",
+                            Type = ActionTypes.ImBack,
+                            Value = "Main Menu",
+                        },
+                },
+                };
+
+
+                // Attach the Hero Card to the response
+                var attachment = heroCard.ToAttachment();
+                var message = MessageFactory.Attachment(attachment);
+
+                await stepContext.Context.SendActivityAsync(message, cancellationToken);
+
+                return await stepContext.NextAsync();
             }
             else
             {
-                return await stepContext.BeginDialogAsync(nameof(MainDialog), cancellationToken: cancellationToken);
+                return await stepContext.BeginDialogAsync(nameof(FeedbackDialog), cancellationToken: cancellationToken);
             }
 
         }

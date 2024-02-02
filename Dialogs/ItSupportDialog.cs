@@ -100,7 +100,11 @@ namespace ToDoBot.Dialogs.Operations
 
             await stepContext.Context.SendActivityAsync(message, cancellationToken);
 
-            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("Thank you for working with our Bot. Would you like to provide feedback on your experience?") }, cancellationToken);
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions
+            {
+                Prompt = MessageFactory.Text("Was the above information helpful?")
+            },
+                       cancellationToken);
         }
 
         private static async Task<DialogTurnResult> FeedbackStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -108,12 +112,35 @@ namespace ToDoBot.Dialogs.Operations
             if ((bool)stepContext.Result)
             {
 
-                return await stepContext.BeginDialogAsync(nameof(FeedbackDialog), null, cancellationToken: cancellationToken);
+                var heroCard = new HeroCard
+                {
+                    Text = "Thank you for using our Bot 😊",
+
+                    Buttons = new List<CardAction>
+                {
+                    new CardAction()
+                        {
+                            Title = "Main Menu",
+                            Type = ActionTypes.ImBack,
+                            Value = "Main Menu",
+                        },
+                },
+                };
+
+
+                // Attach the Hero Card to the response
+                var attachment = heroCard.ToAttachment();
+                var message = MessageFactory.Attachment(attachment);
+
+                await stepContext.Context.SendActivityAsync(message, cancellationToken);
+
+                return await stepContext.NextAsync();
             }
             else
             {
-                return await stepContext.BeginDialogAsync(nameof(MainDialog), cancellationToken: cancellationToken);
+                return await stepContext.BeginDialogAsync(nameof(FeedbackDialog), cancellationToken: cancellationToken);
             }
+
         }
 
 
