@@ -9,6 +9,7 @@ namespace Microsoft.BotBuilderSamples
     {
         // Gets or sets whether the user has been welcomed in the conversation.
         //public string Name { get; set; }
+        public string Name { get; set; } = "Anand";
 
     }
 }
