@@ -1,7 +1,44 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Page</title>
+    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat-es5.js"></script>
+    <script src="https://unpkg.com/botframework-directlinejs"></script>
     <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        nav {
+            background-color: #555;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+            nav a {
+                color: #fff;
+                text-decoration: none;
+                padding: 10px 20px;
+                margin: 0 10px;
+                display: inline-block;
+            }
+
+        section {
+            margin: 20px;
+        }
 
         #chatbot-icon {
             position: fixed;
@@ -12,38 +49,123 @@
             cursor: pointer;
         }
 
-        #chatbot-frame {
+        #webchat {
             display: none;
             position: fixed;
             bottom: 50px;
             right: 20px;
-            width: 350px;
-            height: 500px;
-            border: none;
+            border: 2px solid black;
+            border-radius: 8px;
             z-index: 9998;
+            overflow: hidden;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .slider-container {
+            max-width: 800px;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
         }
     </style>
 </head>
 <body>
 
+    <header>
+        <h1>Chatbot Web Page</h1>
+    </header>
 
-    <img src="https://chatbot897.blob.core.windows.net/chatbotimage/chat-bot.png" id="chatbot-icon" alt="Chatbot Icon" onclick="toggleChatbot()">
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </nav>
 
-    <iframe src='https://webchat.botframework.com/embed/newjoineebot?s=11kQTpK1k48.HxauLaKBPOAKZe9yhuFaRH6tJtVveCkLRYkaLXrlXG8' id="chatbot-frame"></iframe>
+    <section>
+        <!-- Image Slider -->
+        <div class="slider-container">
+            <div class="slider">
+                <div class="slide"><img src="image1.jpg" alt="Slide 1"></div>
+                <div class="slide"><img src="image2.jpg" alt="Slide 2"></div>
+                <div class="slide"><img src="image3.jpg" alt="Slide 3"></div>
+            </div>
+        </div>
+
+        <!-- Chatbot Icon and Frame -->
+        <img src="https://chatbot897.blob.core.windows.net/chatbotimage/chat-bot.png" id="chatbot-icon" alt="Chatbot Icon" onclick="toggleChatbot()">
+
+        <div id="webchat">
+            <!-- <iframe src='https://webchat.botframework.com/embed/newjoineebot?s=11kQTpK1k48.HxauLaKBPOAKZe9yhuFaRH6tJtVveCkLRYkaLXrlXG8'></iframe> -->
+        </div>
+
+    </section>
 
 
-
+    <footer>
+        &copy; 2024 Chatbot Web Page
+    </footer>
 
     <script>
-        function toggleChatbot() {
-            var chatbotFrame = document.getElementById("chatbot-frame");
-            if (chatbotFrame.style.display === "block") {
-                chatbotFrame.style.display = "none";
-            } else {
-                chatbotFrame.style.display = "block";
-            }
-        }
-    </script>
 
+        function toggleChatbot() {
+            const webchat = document.getElementById('webchat');
+            webchat.style.display = (webchat.style.display === 'none') ? 'block' : 'none';
+        }
+
+        const styleSet = window.WebChat.createStyleSet({
+            bubbleBackground: 'rgba(0, 0, 255, .1)',
+            bubbleFromUserBackground: 'rgba(0, 255, 0, .1)',
+            rootHeight: '550px',
+            rootWidth: '400px',
+            backgroundColor: 'paleturquoise',
+            bubbleFromUserBorderRadius: '12px',
+            bubbleBorderRadius: '12px'
+        });
+
+
+
+        styleSet.textContent = {
+            ...styleSet.textContent,
+            fontFamily: "'Comic Sans MS', 'Arial', sans-serif",
+            fontWeight: 'bold'
+        };
+
+        const avatarOptions = {
+            botAvatarImage: 'https://cdn-icons-png.flaticon.com/128/1079/1079233.png',
+            botAvatarInitials: 'BF',
+            userAvatarImage: 'https://cdn-icons-png.flaticon.com/128/3237/3237472.png',
+            userAvatarInitials: 'WC'
+        };
+
+        const directLine = window.WebChat.createDirectLine({
+            secret: 'pYOkZVx20e0.gstskjuJ1n54ovl6H396gUu9HAZOY-wH_dhEGxym0QE'
+        });
+
+        window.WebChat.renderWebChat({
+            directLine: directLine,
+            userID: '121',
+            username: 'anand',
+            locale: 'en-US',
+            styleSet: styleSet,
+            styleOptions: avatarOptions
+        }, document.getElementById('webchat'));
+    </script>
 </body>
 </html>

@@ -53,7 +53,8 @@ namespace ToDoBot.Dialogs.Operations
             {
                 Title = "Company Culture Video",
                 Subtitle = "Why our company is a great place to work",
-                Text = "Our company values diversity, collaboration, and innovation. Watch this video to learn more about our culture.",
+                Text = "Our company values diversity, collaboration, and innovation. Watch this video to learn more about our culture." +
+                " If you have any questions or need assistance, feel free to reach out to us at fnfi-corporatemail@fnf.com.",
                 Media = new List<MediaUrl>
                 {
                     new MediaUrl()
@@ -88,27 +89,27 @@ namespace ToDoBot.Dialogs.Operations
         {
 
 
-            var heroCard = new HeroCard
-            {
-                Text = "We hope you are excited about joining our fantastic company! If you have any questions or need assistance, feel free to reach out to us at fnfi-corporatemail@fnf.com.",
+            //var heroCard = new HeroCard
+            //{
+            //    Text = "We hope you are excited about joining our fantastic company! If you have any questions or need assistance, feel free to reach out to us at fnfi-corporatemail@fnf.com.",
 
-                Buttons = new List<CardAction>
-                {
-                    new CardAction()
-                        {
-                            Title = "Main Menu",
-                            Type = ActionTypes.ImBack,
-                            Value = "Main Menu",
-                        },
-                },
-            };
+            //    Buttons = new List<CardAction>
+            //    {
+            //        new CardAction()
+            //            {
+            //                Title = "Main Menu",
+            //                Type = ActionTypes.ImBack,
+            //                Value = "Main Menu",
+            //            },
+            //    },
+            //};
 
 
-            // Attach the Hero Card to the response
-            var attachment = heroCard.ToAttachment();
-            var message = MessageFactory.Attachment(attachment);
+            //// Attach the Hero Card to the response
+            //var attachment = heroCard.ToAttachment();
+            //var message = MessageFactory.Attachment(attachment);
 
-            await stepContext.Context.SendActivityAsync(message, cancellationToken);
+            //await stepContext.Context.SendActivityAsync(message, cancellationToken);
 
             return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions
             {

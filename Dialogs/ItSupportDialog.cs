@@ -39,7 +39,8 @@ namespace ToDoBot.Dialogs.Operations
             {
                 Title = "How to Raise a Support Ticket",
                 Subtitle = "Watch this video to know how to raise a support ticket",
-                Text = "To raise a support ticket, please watch the above video. After watching the video, you can access the ticket portal to raise your ticket from the given below link.",
+                Text = "To raise a support ticket, please watch the above video. After watching the video, you can access the ticket portal to raise your ticket from the given below link. " +
+                "For further assistance, please contact IT support via email at it_helpdesk@fnf.com.",
                 Image = new ThumbnailUrl
                 {
                     Url = "https://chatbot897.blob.core.windows.net/chatbotimage/it support.PNG",
@@ -79,26 +80,26 @@ namespace ToDoBot.Dialogs.Operations
         private async Task<DialogTurnResult> ProcessOptionStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
 
-            var heroCard = new HeroCard
-            {
-                Text = "For further assistance, please contact IT support via email at it_helpdesk@fnf.com.",
+            //var heroCard = new HeroCard
+            //{
+            //    Text = "For further assistance, please contact IT support via email at it_helpdesk@fnf.com.",
 
-                Buttons = new List<CardAction>
-                {
-                    new CardAction()
-                    {
-                        Title = "Main Menu",
-                        Type = ActionTypes.ImBack,
-                        Value = "Main Menu",
-                    },
-                },
-            };
+            //    Buttons = new List<CardAction>
+            //    {
+            //        new CardAction()
+            //        {
+            //            Title = "Main Menu",
+            //            Type = ActionTypes.ImBack,
+            //            Value = "Main Menu",
+            //        },
+            //    },
+            //};
 
-            // Attach the Hero Card to the response
-            var attachment = heroCard.ToAttachment();
-            var message = MessageFactory.Attachment(attachment);
+            //// Attach the Hero Card to the response
+            //var attachment = heroCard.ToAttachment();
+            //var message = MessageFactory.Attachment(attachment);
 
-            await stepContext.Context.SendActivityAsync(message, cancellationToken);
+            //await stepContext.Context.SendActivityAsync(message, cancellationToken);
 
             return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions
             {
