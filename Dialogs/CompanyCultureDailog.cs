@@ -26,6 +26,7 @@ namespace ToDoBot.Dialogs.Operations
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallSteps));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
+            AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt)));
 
             InitialDialogId = nameof(WaterfallDialog);
         }
