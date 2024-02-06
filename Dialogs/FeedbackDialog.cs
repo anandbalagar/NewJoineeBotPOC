@@ -27,10 +27,7 @@ namespace ToDoBot.Dialogs.Operations
             {
                 StartStepAsync,
                 SecondStepAsync,
-                ThirdStepAsync,
-               // FourthStepAsync,
-                //DisplayFeedbackStepAsync
-                //CommentStepAsync
+             
             };
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallSteps));
@@ -41,42 +38,17 @@ namespace ToDoBot.Dialogs.Operations
             InitialDialogId = nameof(WaterfallDialog);
         }
 
-
-        //private async Task<DialogTurnResult> StartStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        //{
-        //    //stepContext.Values["rate"] = ((FoundChoice)stepContext.Result).Value;
-
-        //    var receiptCard = CardTypes.GetAdaptiveCardFeedback();
-        //    var response = MessageFactory.Attachment(receiptCard, ssml: "Welcome to my Bot!");
-
-        //    await stepContext.Context.SendActivityAsync(response, cancellationToken);
-        //    return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
-        //    //return null;
-        //}
-
         private async Task<DialogTurnResult> StartStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            return await stepContext.PromptAsync(nameof(ChoicePrompt),
-               new PromptOptions
-               {
-                   Prompt = MessageFactory.Text("We are sorry that the provided information wasn't helpful. We value your input, So please rate the helpfulness of the above information on a scale of 1-5"),
-                   Choices = ChoiceFactory.ToChoices(new List<string> { "1", "2", "3","4","5" }),
-               }, cancellationToken);
-        }
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("We are sorry that the provided information wasn't helpful. We value your input, So please add comments or any suggestions so that we can improve upon ourselves") }, cancellationToken);
 
+        }
         private async Task<DialogTurnResult> SecondStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            stepContext.Values["Ratings"] = ((FoundChoice)stepContext.Result).Value;
-
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("You can also add comments or suggestions so that we can improve upon ourselves") }, cancellationToken);
-        }
-
-        private async Task<DialogTurnResult> ThirdStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             stepContext.Values["Comments"] = (string)stepContext.Result;
 
             Feedback feedback = new Feedback();
-            feedback.Rating = (string)stepContext.Values["Ratings"];
+           // feedback.Rating = (string)stepContext.Values["Ratings"];
             feedback.Comment = (string)stepContext.Values["Comments"];
 
             bool status = userRepository.InsertFeedback(feedback);
@@ -93,17 +65,5 @@ namespace ToDoBot.Dialogs.Operations
             return await stepContext.EndDialogAsync(null, cancellationToken);
 
         }
-
-        //private async Task<DialogTurnResult> FourthStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        //{
-        //    if ((bool)stepContext.Result)
-        //    {
-        //        return await stepContext.ReplaceDialogAsync(InitialDialogId, null, cancellationToken);
-        //    }
-        //    else
-        //    {
-        //        return await stepContext.EndDialogAsync(null, cancellationToken);
-        //    }
-        //}
     }
 }
