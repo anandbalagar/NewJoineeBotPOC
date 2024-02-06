@@ -26,7 +26,7 @@ namespace ToDoBot.Dialogs.Operations
             var waterfallSteps = new WaterfallStep[]
             {
                 StartStepAsync,
-                SecondStepAsync,
+                //SecondStepAsync,
                 ThirdStepAsync,
                // FourthStepAsync,
                 //DisplayFeedbackStepAsync
@@ -56,28 +56,51 @@ namespace ToDoBot.Dialogs.Operations
 
         private async Task<DialogTurnResult> StartStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            return await stepContext.PromptAsync(nameof(ChoicePrompt),
-               new PromptOptions
-               {
-                   Prompt = MessageFactory.Text("We are sorry that the provided information wasn't helpful. We value your input, So please rate the helpfulness of the above information on a scale of 1-5"),
-                   Choices = ChoiceFactory.ToChoices(new List<string> { "1", "2", "3","4","5" }),
-               }, cancellationToken);
+            var feedbackCard = CardTypes.CreateAdaptiveCardAttachment("Feedback.json");
+            var message = MessageFactory.Attachment(feedbackCard, ssml: "Welcome to my Bot!");
+            await stepContext.Context.SendActivityAsync(message, cancellationToken);
+
+            //// You can create a Hero Card with a text input and a button
+            //var heroCard = new HeroCard
+            //{
+            //    Title = "Feedback",
+            //    Text = "We are sorry that the provided information wasn't helpful. We value your input. Please add some comments",
+            //    Buttons = new List<CardAction>
+            //    {
+            //        new CardAction
+            //        {
+            //            Type = ActionTypes.ImBack,
+            //            Title = "Submit Feedback",
+            //            Value = "Submit Feedback",
+            //        },
+            //    },
+
+            //    // Input.Text for user to enter their comment
+            //    Tap = new CardAction
+            //    {
+            //        Type = ActionTypes.ImBack,
+            //        Text = "Enter your comment...",
+            //    },
+            //};
+
+            //var response = MessageFactory.Attachment(heroCard.ToAttachment());
+            //await stepContext.Context.SendActivityAsync(response, cancellationToken);
+            return Dialog.EndOfTurn;
         }
 
-        private async Task<DialogTurnResult> SecondStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            stepContext.Values["Ratings"] = ((FoundChoice)stepContext.Result).Value;
+        //private async Task<DialogTurnResult> SecondStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        //{
+        //    //stepContext.Values["Ratings"] = ((FoundChoice)stepContext.Result).Value;
 
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("You can also add comments or suggestions so that we can improve upon ourselves") }, cancellationToken);
-        }
+        //    //return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("You can also add comments or suggestions so that we can improve upon ourselves") }, cancellationToken);
+        //}
 
         private async Task<DialogTurnResult> ThirdStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            stepContext.Values["Comments"] = (string)stepContext.Result;
+            var userComment = ((JObject)stepContext.Result)["userComment"].ToString();
 
             Feedback feedback = new Feedback();
-            feedback.Rating = (string)stepContext.Values["Ratings"];
-            feedback.Comment = (string)stepContext.Values["Comments"];
+            feedback.Comment = userComment;
 
             bool status = userRepository.InsertFeedback(feedback);
 
