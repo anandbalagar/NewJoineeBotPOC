@@ -44,7 +44,7 @@ namespace EchoBot1.Dialogs
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
             AddDialog(new AccountSetupDialog(userState));
             AddDialog(new TrainingMaterialDialog());
-            AddDialog(new FeedbackDialog(userRepository));
+            AddDialog(new FeedbackDialog());
             AddDialog(new ItSupportDialog());
             AddDialog(new CompanyCultureDialog());
 

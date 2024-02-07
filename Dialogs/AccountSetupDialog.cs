@@ -1,4 +1,5 @@
 ﻿using EchoBot1.Dialogs;
+using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
@@ -111,6 +112,42 @@ namespace ToDoBot.Dialogs.Operations
         {
             stepContext.Values["password"] = (string)stepContext.Result;
 
+            var userDetails = new AccountSetup
+            {
+                PartitionKey = "UserDetails",
+                RowKey = Guid.NewGuid().ToString(),
+                FName = (string)stepContext.Values["fname"],
+                LName = (string)stepContext.Values["lname"],
+                Phone = (long)stepContext.Values["phone"],
+                Address = (string)stepContext.Values["address"],
+                Gender = (string)stepContext.Values["gender"],
+                Password = (string)stepContext.Values["password"],
+
+            };
+
+
+
+            // Retrieve your Azure Storage account connection string
+            var connectionString = "DefaultEndpointsProtocol=https;AccountName=storagedemofeedback;AccountKey=5Kt3xEhLQinX0/pzPm6fukovqZRmwNVxEeLiUnhAZsAYVyq8BpxeZ8k7lk+tHD3DM7J8dhUfpgj8+AStg4SC9w==;EndpointSuffix=core.windows.net";
+
+            // Create a CloudTableClient object
+            var storageAccount = CloudStorageAccount.Parse(connectionString);
+            var tableClient = storageAccount.CreateCloudTableClient(new TableClientConfiguration());
+
+            // Get a reference to your Azure table
+            var table = tableClient.GetTableReference("JoineeDetails");
+
+            // Create the table if it doesn't exist
+            await table.CreateIfNotExistsAsync();
+
+          
+
+            // Create an operation to insert the user profile into the table
+            var insertOperation = Microsoft.Azure.Cosmos.Table.TableOperation.InsertOrReplace(userDetails);
+
+            // Execute the insert operation
+            await table.ExecuteAsync(insertOperation);
+
             var userInfo = await _userProfileAccessor.GetAsync(stepContext.Context, () => new AccountSetup(), cancellationToken);
 
             userInfo.FName = (string)stepContext.Values["fname"];
@@ -128,22 +165,6 @@ namespace ToDoBot.Dialogs.Operations
             var receiptCard = cardInstance.CreateReceiptCard(userInfo);
             var response = MessageFactory.Attachment(receiptCard, ssml: "Welcome to my Bot!");
 
-            // Create a Hero Card with a button for returning to the Main Menu
-           // var heroCard = new HeroCard
-           //{
-           //         Buttons = new List<CardAction>
-           // {
-           //     new CardAction
-           //     {
-           //         Type = ActionTypes.ImBack,
-           //         Title = "Main Menu",
-           //         Value = "Main Menu"
-           //     }
-           // }
-           // };
-
-           // // Attach the Hero Card to the response
-           // response.Attachments.Add(heroCard.ToAttachment());
 
             await stepContext.Context.SendActivityAsync(response, cancellationToken);
 
@@ -192,21 +213,6 @@ namespace ToDoBot.Dialogs.Operations
 
         }
 
-            //private async Task<DialogTurnResult> ExitStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-            //{
-            //    if ((bool)stepContext.Result)
-            //    {
-            //        return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
-
-            //    }
-            //    else
-
-            //    {
-            //        return await stepContext.BeginDialogAsync(nameof(WaterfallDialog), cancellationToken: cancellationToken);
-
-            //    }
-
-            //}
             private static Task<bool> PhonePromptValidatorAsync(PromptValidatorContext<long> promptContext, CancellationToken cancellationToken)
         {
             string phoneNumberString = promptContext.Recognized.Value.ToString();

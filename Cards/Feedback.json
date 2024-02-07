@@ -10,7 +10,7 @@
     },
     {
       "type": "Input.Text",
-      "id": "userComment",
+      "id": "Comment",
       "placeholder": "Type your comment here"
     }
   ],
@@ -19,7 +19,7 @@
       "type": "Action.Submit",
       "title": "Submit",
       "data": {
-        "action": "submitComment"
+        "action": "submit"
       }
     }
   ]
