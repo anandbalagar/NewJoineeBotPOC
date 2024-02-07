@@ -45,7 +45,7 @@ namespace ToDoBot.Dialogs.Operations
 
         private async Task<DialogTurnResult> StartStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("We are sorry to hear that the provide information was not helpful. Can you please add some suggestions so that we can improve upon ourselves") }, cancellationToken);
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("We are sorry to hear that the provided information was not helpful. Can you please add some suggestions so that we can improve upon ourselves") }, cancellationToken);
 
         }
 
