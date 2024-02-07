@@ -1,10 +1,11 @@
-﻿using Microsoft.Bot.Builder;
+﻿using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
 using Microsoft.Bot.Schema;
 using Microsoft.BotBuilderSamples;
-using NewJoineeBOT.Models;
 using NewJoineeBOT.Utility;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -12,25 +13,23 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+
 namespace ToDoBot.Dialogs.Operations
 {
 
     public class FeedbackDialog : ComponentDialog
     {
-        UserRepository userRepository;
+        private object AdaptiveCardPrompt;
 
-        public FeedbackDialog(UserRepository _userRepository) : base(nameof(FeedbackDialog))
+
+        public FeedbackDialog() : base(nameof(FeedbackDialog))
         {
-            userRepository = _userRepository;
 
             var waterfallSteps = new WaterfallStep[]
             {
                 StartStepAsync,
                 SecondStepAsync,
-                ThirdStepAsync,
-               // FourthStepAsync,
-                //DisplayFeedbackStepAsync
-                //CommentStepAsync
+               
             };
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallSteps));
@@ -42,68 +41,54 @@ namespace ToDoBot.Dialogs.Operations
         }
 
 
-        //private async Task<DialogTurnResult> StartStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        //{
-        //    //stepContext.Values["rate"] = ((FoundChoice)stepContext.Result).Value;
 
-        //    var receiptCard = CardTypes.GetAdaptiveCardFeedback();
-        //    var response = MessageFactory.Attachment(receiptCard, ssml: "Welcome to my Bot!");
-
-        //    await stepContext.Context.SendActivityAsync(response, cancellationToken);
-        //    return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
-        //    //return null;
-        //}
 
         private async Task<DialogTurnResult> StartStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            return await stepContext.PromptAsync(nameof(ChoicePrompt),
-               new PromptOptions
-               {
-                   Prompt = MessageFactory.Text("We are sorry that the provided information wasn't helpful. We value your input, So please rate the helpfulness of the above information on a scale of 1-5"),
-                   Choices = ChoiceFactory.ToChoices(new List<string> { "1", "2", "3","4","5" }),
-               }, cancellationToken);
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("We are sorry to hear that the provide information was not helpful. Can you please add some suggestions so that we can improve upon ourselves") }, cancellationToken);
+
         }
+
 
         private async Task<DialogTurnResult> SecondStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            stepContext.Values["Ratings"] = ((FoundChoice)stepContext.Result).Value;
 
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("You can also add comments or suggestions so that we can improve upon ourselves") }, cancellationToken);
+            stepContext.Values["comment"] = (string)stepContext.Result;
+
+            var userFeedback = new Feedback
+            {
+                PartitionKey = "UserDetails",
+                RowKey = Guid.NewGuid().ToString(),
+                Comment = (string)stepContext.Values["comment"],
+            };
+
+
+
+            // Retrieve your Azure Storage account connection string
+            var connectionString = "DefaultEndpointsProtocol=https;AccountName=storagedemofeedback;AccountKey=5Kt3xEhLQinX0/pzPm6fukovqZRmwNVxEeLiUnhAZsAYVyq8BpxeZ8k7lk+tHD3DM7J8dhUfpgj8+AStg4SC9w==;EndpointSuffix=core.windows.net";
+
+            // Create a CloudTableClient object
+            var storageAccount = CloudStorageAccount.Parse(connectionString);
+            var tableClient = storageAccount.CreateCloudTableClient(new TableClientConfiguration());
+
+            // Get a reference to your Azure table
+            var table = tableClient.GetTableReference("Feedback");
+
+            // Create the table if it doesn't exist
+            await table.CreateIfNotExistsAsync();
+
+            // Create an operation to insert the user profile into the table
+            var insertOperation = Microsoft.Azure.Cosmos.Table.TableOperation.InsertOrReplace(userFeedback);
+
+            // Execute the insert operation
+            await table.ExecuteAsync(insertOperation);
+
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Thank you! Feedback submitted successfully"), cancellationToken);
+
+            return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+
+
         }
 
-        private async Task<DialogTurnResult> ThirdStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            stepContext.Values["Comments"] = (string)stepContext.Result;
-
-            Feedback feedback = new Feedback();
-            feedback.Rating = (string)stepContext.Values["Ratings"];
-            feedback.Comment = (string)stepContext.Values["Comments"];
-
-            bool status = userRepository.InsertFeedback(feedback);
-
-            if (status)
-            {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("Thank You! Feedback submitted successfully"), cancellationToken);
-            }
-            else
-            {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("Feedback not submitted"), cancellationToken);
-            }
-
-            return await stepContext.EndDialogAsync(null, cancellationToken);
-
-        }
-
-        //private async Task<DialogTurnResult> FourthStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        //{
-        //    if ((bool)stepContext.Result)
-        //    {
-        //        return await stepContext.ReplaceDialogAsync(InitialDialogId, null, cancellationToken);
-        //    }
-        //    else
-        //    {
-        //        return await stepContext.EndDialogAsync(null, cancellationToken);
-        //    }
-        //}
     }
 }

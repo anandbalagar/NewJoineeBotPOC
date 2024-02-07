@@ -1,0 +1,26 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Please provide your feedback:",
+      "wrap": true
+    },
+    {
+      "type": "Input.Text",
+      "id": "Comment",
+      "placeholder": "Type your comment here"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Submit",
+      "data": {
+        "action": "submit"
+      }
+    }
+  ]
+}

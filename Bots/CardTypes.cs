@@ -102,6 +102,7 @@ namespace Microsoft.BotBuilderSamples
             return heroCard;
         }
 
+
         public static Attachment CreateAdaptiveCardAttachment(string cardFileName)
         {
 
